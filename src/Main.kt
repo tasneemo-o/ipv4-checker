@@ -108,5 +108,38 @@ fun checkIpv4(name: String, result: Boolean, expectedResult: Boolean) {
 
 fun isValidIpv4(ipAddress: String): Boolean {
 
-    return false
+    // check for the ip string is empty
+    if (ipAddress.isEmpty()) {
+        return false
+    }
+
+    // check for leading or trailing dots
+    if (ipAddress.startsWith('.') || ipAddress.endsWith('.')) {
+        return false
+    }
+
+    // if the number of segments is not exactly 4
+    val segments = ipAddress.split(".")
+    if (segments.size != 4) {
+        return false
+    }
+
+    // check if the segment is not a number or not in the range (0-255)
+    for (segment in segments) {
+        val segmentValue = segment.toIntOrNull()
+        if (segmentValue == null) {
+            return false
+        } else if (segmentValue < 0 || segmentValue > 255) {
+            return false
+        }
+    }
+
+    // check for leading or trailing zeros
+    for (segment in segments) {
+        if (segment != "0" && segment.startsWith('0')) {
+            return false
+        }
+    }
+
+    return true
 }
