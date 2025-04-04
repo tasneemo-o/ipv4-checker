@@ -118,28 +118,40 @@ fun isValidIpv4(ipAddress: String): Boolean {
         return false
     }
 
+    // check for consecutive dots
+    // i found that this case is already handled when checking for the number of segments,
+    // as nothing between the 2 dots (..) it won't be calculated as a segment
+    // but i wanted to make an extra checking for it just in case :)
+    if (ipAddress.contains("..")) {
+        return false
+    }
+
     // if the number of segments is not exactly 4
     val segments = ipAddress.split(".")
     if (segments.size != 4) {
         return false
     }
 
-    // check if the segment is not a number or not in the range (0-255)
     for (segment in segments) {
+
+        // check if the segment is not a number or not in the range (0-255)
         val segmentValue = segment.toIntOrNull()
         if (segmentValue == null) {
             return false
         } else if (segmentValue < 0 || segmentValue > 255) {
             return false
         }
-    }
 
-    // check for leading or trailing zeros
-    for (segment in segments) {
+        // check for leading or trailing zeros
         if (segment != "0" && segment.startsWith('0')) {
             return false
         }
     }
+
+    // check for the non-dot separator (ex: 192-168-1-1)
+    // this case is also handled when checking for the number of segments,
+    // as it splits using '.', it will not count any segments
+
 
     return true
 }
