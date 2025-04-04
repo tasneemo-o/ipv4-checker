@@ -1,96 +1,96 @@
 fun main() {
-    val validIp = "192.168.1.1"
-    val validIp2 = "0.0.0.0"
-    val validIp3 = "255.255.255.255"
+    val standardValidIp = "192.168.1.1"
+    val allZerosIp = "0.0.0.0"
+    val allMaxValuesIp = "255.255.255.255"
 
     val emptyIp = ""
-    val leadingDots  = ".192.168.1.1"
-    val trailingDots  = "192.168.1.1."
-    val invalidSegmentsCount  = "192.168.1"
-    val invalidSegmentsCount2  = "192.168.1.1.12"
-    val nonNumericSegment  = "192.%.65.1"
-    val emptySegment  = "192.168. .1"
-    val invalidOutOfBounds  = "192.168.1.500"
-    val invalidWithNegatives  = "-192.168.1.1"
-    val leadingZeroes  = "0192.168.1.1"
-    val invalidWithConsecutiveDots  = "192.168..1.1"
-    val invalidSeparator  = "192-168-1-1"
+    val ipWithLeadingDot = ".192.168.1.1"
+    val ipWithTrailingDot = "192.168.1.1."
+    val fewSegmentsIp = "192.168.1"
+    val manySegmentsIp = "192.168.1.1.12"
+    val ipWithNonNumericSegment = "192.%.65.1"
+    val ipWithEmptySegment = "192.168. .1"
+    val ipWithLargeSegment = "192.168.1.500"
+    val ipWithNegativeSegment = "-192.168.1.1"
+    val ipWithLeadingZeroes = "0192.168.1.1"
+    val ipWithConsecutiveDots = "192.168..1.1"
+    val ipWithInvalidSeparator = "192-168-1-1"
 
 
     checkIpv4(
-        name = "a valid ip address",
-        result = isValidIpv4(validIp),
+        name = "should accept standard valid IP address",
+        result = isValidIpv4(standardValidIp),
         expectedResult = true
     )
     checkIpv4(
-        name = "all segments are 0",
-        result = isValidIpv4(validIp2),
+        name = "should accept IP with all zeros",
+        result = isValidIpv4(allZerosIp),
         expectedResult = true
     )
     checkIpv4(
-        name = "all segments are 255",
-        result = isValidIpv4(validIp3),
+        name = "should accept IP with all 255",
+        result = isValidIpv4(allMaxValuesIp),
         expectedResult = true
     )
     checkIpv4(
-        name = "the ip address cannot be empty",
+        name = "should reject empty IP address",
         result = isValidIpv4(emptyIp),
         expectedResult = false
     )
     checkIpv4(
-        name = "the ip address cannot contain leading dots",
-        result = isValidIpv4(leadingDots),
+        name = "should reject IP with leading dot",
+        result = isValidIpv4(ipWithLeadingDot),
         expectedResult = false
     )
     checkIpv4(
-        name = "the ip address cannot contain trailing dots",
-        result = isValidIpv4(trailingDots),
+        name = "should reject IP with trailing dot",
+        result = isValidIpv4(ipWithTrailingDot),
         expectedResult = false
     )
     checkIpv4(
-        name = "the ip address must have exactly 4 segments (no more)",
-        result = isValidIpv4(invalidSegmentsCount),
+        name = "should reject IP with fewer than 4 segments",
+        result = isValidIpv4(fewSegmentsIp),
         expectedResult = false
     )
     checkIpv4(
-        name = "the ip address must have exactly 4 segments (no less)",
-        result = isValidIpv4(invalidSegmentsCount2),
+        name = "should reject IP with more than 4 segments",
+        result = isValidIpv4(manySegmentsIp),
         expectedResult = false
     )
     checkIpv4(
-        name = "a segment cannot be empty",
-        result = isValidIpv4(emptySegment),
+        name = "should reject IP with empty segment",
+        result = isValidIpv4(ipWithEmptySegment),
         expectedResult = false
     )
     checkIpv4(
-        name = "all segments must be a number",
-        result = isValidIpv4(nonNumericSegment),
+        name = "should reject IP with non-numeric segment",
+        result = isValidIpv4(ipWithNonNumericSegment),
         expectedResult = false
     )
     checkIpv4(
-        name = "every segment must be in the range 1-255 (not greater)",
-        result = isValidIpv4(invalidOutOfBounds),
+        name = "should reject IP with segment value greater than 255",
+        result = isValidIpv4(ipWithLargeSegment),
         expectedResult = false
     )
     checkIpv4(
-        name = "every segment must be in the range 1-255 (not smaller)",
-        result = isValidIpv4(invalidWithNegatives),
+        name = "should reject IP with negative segment value",
+        result = isValidIpv4(ipWithNegativeSegment),
         expectedResult = false
     )
 
     checkIpv4(
-        name = "every segment in the ip address cannot start with 0",
-        result = isValidIpv4(leadingZeroes),
+        name = "should reject IP with leading zeros in segment",
+        result = isValidIpv4(ipWithLeadingZeroes),
         expectedResult = false
     )
     checkIpv4(
-        name = "no consecutive dots are allowed",
-        result = isValidIpv4(invalidWithConsecutiveDots),
+        name = "should reject IP with consecutive dots",
+        result = isValidIpv4(ipWithConsecutiveDots),
         expectedResult = false
     )
     checkIpv4(
-        name = "invalid separator: it can be . only",
-        result = isValidIpv4(invalidSeparator),
+        name = "should reject IP with invalid separators",
+        result = isValidIpv4(ipWithInvalidSeparator),
         expectedResult = false
     )
 }
@@ -131,6 +131,7 @@ fun isValidIpv4(ipAddress: String): Boolean {
     if (segments.size != 4) {
         return false
     }
+
 
     for (segment in segments) {
 
