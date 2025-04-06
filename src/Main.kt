@@ -119,9 +119,7 @@ fun isValidIpv4(ipAddress: String): Boolean {
     }
 
     // check for consecutive dots
-    // i found that this case is already handled when checking for the number of segments,
-    // as nothing between the 2 dots (..) it won't be calculated as a segment
-    // but i wanted to make an extra checking for it just in case :)
+    // this case is already handled when checking for the number of segments,
     if (ipAddress.contains("..")) {
         return false
     }
